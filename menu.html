@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Меню — кафе «Лес» · шаверма, бургеры, закуски</title>
+<meta name="description" content="Меню кафе «Лес»: 13 видов шавермы, шаверма на тарелке, бургеры и закуски. Цены от 179 ₽.">
+<meta name="theme-color" content="#0b1510">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%2312211a'/%3E%3Cpath d='M24 8l8 12h-4l7 10h-5l6 8H12l6-8h-5l7-10h-4z' fill='%233f8a4a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=Manrope:wght@400;600;700;800&family=Ruslan+Display&family=Unbounded:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="menu">
+<main>
+  <section class="page-hero">
+    <div class="hero-canvas" data-scene="burger" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="eyebrow">29 позиций · от 179 ₽</span>
+      <h1>Меню <span class="accent">Леса</span></h1>
+      <p>Шаверма тринадцати видов, богатырские тарелки, бургеры и закуски. Готовим круглосуточно.</p>
+    </div>
+  </section>
+
+  <div class="menu-tools">
+    <div class="wrap">
+      <div class="chips" id="chips" role="tablist" aria-label="Категории меню"></div>
+      <label class="search"><span class="sr-only">Поиск по меню</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="search" placeholder="Найти блюдо…" autocomplete="off">
+      </label>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div id="menuRoot"></div>
+    <div class="empty" id="empty">Такого в Лесу пока не растёт. Попробуйте другое слово 🌲</div>
+    <div class="menu-note">Меню и цены взяты с Яндекс Карт (данные от представителя заведения) и могут отличаться от актуальных, так что уточняйте на кассе. Описания блюд составлены по их названиям.</div>
+  </div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="cta reveal">
+        <span class="eyebrow">Заказ по телефону</span>
+        <h2>Выбрали? <span class="tale" style="color:var(--gold)">Звоните!</span></h2>
+        <p>Приготовим к вашему приходу или отдадим навынос.</p>
+        <div class="row"><a class="btn" href="tel:+79213681383">+7 (921) 368-13-83</a><a class="btn ghost" href="contacts.html">Как добраться</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/main.js"></script>
+<script src="assets/scene.js"></script>
+</body>
+</html>
