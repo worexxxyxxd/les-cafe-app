@@ -1,12 +1,10 @@
 /* ============ Сеть кафе «Лес» — общий стиль ============ */
-/* Фирменный шрифт заголовков ST Izhora: положите файлы в assets/fonts/
-   (STIzhora.woff2 / STIzhora.woff / STIzhora.otf / STIzhora.ttf). Пока файлов нет,
-   используется установленный в системе ST Izhora, а если его нет — похожий Ruslan Display. */
+/* Фирменный шрифт заголовков ST Izhora (Alexander Shimanov, Shimanov Types) — assets/fonts/STIzhora.woff2.
+   После покупки коммерческой лицензии замените файл на купленный (тоже в woff2).
+   Знаков, которых нет в шрифте (« » : / № · …), браузер берёт из запасного Ruslan Display. */
 @font-face{
   font-family:"ST Izhora";
-  src:local("ST Izhora"),local("STIzhora"),local("STIzhora-Regular"),
-      url("fonts/STIzhora.woff2") format("woff2"),url("fonts/STIzhora.woff") format("woff"),
-      url("fonts/STIzhora.otf") format("opentype"),url("fonts/STIzhora.ttf") format("truetype");
+  src:url("fonts/STIzhora.woff2") format("woff2");
   font-weight:400 900;font-display:swap;
 }
 :root{
