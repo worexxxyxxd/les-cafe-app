@@ -199,7 +199,7 @@
 
   /* ---------- dish card markup helper ---------- */
   window.dishCard = (d, cls="") => `
-    <article class="dish ${cls} reveal" data-tilt="${cls?6:10}">
+    <article class="dish ${cls} reveal" data-tilt="${cls?6:10}" data-title="${d.name}" data-price="${d.price}" data-art="${d.art}">
       ${d.hit?'<span class="hit-sticker">хит</span>':''}
       <div class="art">${ART[d.art](d.o||{})}</div>
       <div class="meta">
@@ -214,10 +214,10 @@
   const price = p => typeof p==="number" ? p.toLocaleString("ru-RU")+" ₽" : p.replace(" / "," <i>/</i> ")+" ₽";
   function itemRow(it){
     const [name, desc, p, art, hit, o, size] = it;
-    return `<div class="mi${art?'':' no-ico'}" data-name="${(name+' '+desc).toLowerCase()}">
+    return `<div class="mi${art?'':' no-ico'}" data-name="${(name+' '+desc).toLowerCase()}" data-title="${name}" data-price="${p}" data-size="${size||''}" data-art="${art||''}">
       ${art?`<div class="mi-ico">${ART[art](o||{})}</div>`:''}
       <div class="mi-txt"><h4>${name}${hit?'<span class="hit">хит</span>':''}${size?`<small>${size}</small>`:''}</h4>${desc?`<p>${desc}</p>`:''}</div>
-      <div class="mi-p">${price(p)}</div></div>`;
+      <div class="mi-p"><span>${price(p)}</span></div></div>`;
   }
   function renderMenu(root, data, chips, search, empty){
     if(!root) return;

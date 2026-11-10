@@ -1,0 +1,134 @@
+/* ===== ДЕМО онлайн-заказа: корзина ===== */
+
+/* кнопки «+» в меню */
+.mi-p{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.mi-add{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.compact .mi-p{flex-direction:row;align-items:center;gap:12px}
+.compact .mi-add{flex-direction:row;flex-wrap:wrap;justify-content:flex-end}
+.compact .add-btn{height:32px;min-width:32px}
+.compact .qty{height:32px}.compact .qty button{width:28px;height:28px;font-size:18px}
+.cs-noico{font-size:24px}
+/* напиток с двумя объёмами: кнопки отдельной строкой под названием */
+.compact .mi:has(.add-btn.var, .var-wrap) .mi-p{display:contents}
+.compact .mi:has(.add-btn.var, .var-wrap) .mi-p > span{font-weight:900;font-size:18px;white-space:nowrap}
+.compact .mi:has(.add-btn.var, .var-wrap) .mi-add{grid-column:1/-1;justify-content:flex-end;margin-top:6px}
+.add-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:38px;height:38px;padding:0 10px;border-radius:999px;
+  background:var(--sage);color:#fff;border:2px solid #17201a;box-shadow:0 3px 0 #17201a;font-weight:800;font-size:13px;transition:transform .2s var(--ease)}
+.add-btn svg{width:16px;height:16px;flex:none}
+.add-btn:hover{transform:translateY(-2px) rotate(-3deg)}
+.add-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #17201a}
+.add-btn.var{height:32px;font-size:12px;padding:0 10px 0 8px}
+.qty{display:inline-flex;align-items:center;gap:2px;height:38px;padding:2px;border-radius:999px;background:#17201a;color:#fff}
+.qty button{width:32px;height:32px;border-radius:50%;font-size:20px;font-weight:800;line-height:1;display:grid;place-items:center;color:inherit}
+.qty button:hover{background:rgba(255,255,255,.15)}
+.qty b{min-width:20px;text-align:center;font-size:15px}
+.var-wrap{display:flex;align-items:center;gap:6px}
+.var-wrap small{font-size:12px;font-weight:700;color:#555}
+.sauce-chips span[data-sauce]{cursor:pointer;transition:background .2s,color .2s,transform .2s}
+.sauce-chips span[data-sauce]:hover{transform:translateY(-2px);background:#dfe9da}
+.sauce-chips span[data-sauce]::after{content:" +";color:#5f9f59;font-weight:900}
+.sauce-chips span.in-cart{background:var(--sage);color:#fff}
+.sauce-chips span.in-cart::after{content:" ✓";color:#fff}
+
+/* кнопка на карточках хитов (тёмный фон) */
+.dish-add{flex-direction:row}
+.dish .price-row{gap:10px}
+.dish .weight{margin-left:auto}
+.dish-add .add-btn{height:42px;padding:0 16px;background:var(--gold);color:var(--outline);border-color:var(--outline);box-shadow:0 4px 0 var(--outline);position:relative;z-index:2}
+.dish-add .qty{background:var(--paper);color:var(--outline);height:42px}
+.dish-add .qty button:hover{background:rgba(0,0,0,.08)}
+
+/* плавающая кнопка корзины */
+.cart-fab{position:fixed;z-index:46;right:clamp(14px,3vw,32px);bottom:clamp(14px,3vw,32px);display:none;align-items:center;gap:10px;height:60px;padding:0 22px 0 18px;border-radius:999px;
+  background:var(--terra);color:#fff;font-weight:900;font-size:17px;border:2.5px solid var(--outline);box-shadow:0 6px 0 var(--outline),0 20px 40px -10px rgba(0,0,0,.6)}
+.cart-fab.show{display:inline-flex}
+.cart-fab svg{width:26px;height:26px}
+.cart-fab .cf-n{position:absolute;top:-10px;left:-8px;min-width:28px;height:28px;padding:0 6px;border-radius:999px;background:var(--paper);color:var(--outline);font-style:normal;font-size:14px;display:grid;place-items:center;border:2px solid var(--outline)}
+.cart-fab .cf-n[hidden]{display:none}
+.cart-fab.bump{animation:fabBump .5s var(--ease)}
+@keyframes fabBump{30%{transform:scale(1.12) rotate(-4deg)}60%{transform:scale(.96) rotate(2deg)}}
+.cart-toast{position:fixed;z-index:47;left:50%;bottom:110px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--paper);color:var(--outline);font-weight:800;font-size:14px;
+  padding:10px 16px;border-radius:999px;border:2px solid var(--outline);box-shadow:0 4px 0 var(--outline);transition:opacity .25s,transform .35s var(--ease);max-width:calc(100% - 32px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cart-toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* окно корзины: справа на компьютере */
+.cart-sheet{margin:0 0 0 auto;height:100dvh;max-height:100dvh;width:min(480px,100%);padding:0;border:0;border-left:2.5px solid var(--outline);background:var(--paper);color:#17201a;overflow:hidden}
+.cart-sheet::backdrop{background:rgba(5,10,7,.6);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.cart-sheet[open]{animation:csIn .45s var(--ease)}
+@keyframes csIn{from{transform:translateX(40px);opacity:0}}
+.cs-inner{height:100%;display:flex;flex-direction:column;overflow:auto;overscroll-behavior:contain}
+.cs-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:18px 20px;background:var(--paper);border-bottom:2px dashed rgba(79,138,74,.4)}
+.cs-head h3{flex:1;margin:0;font-family:var(--f-display);font-weight:400;font-size:32px;line-height:1;text-transform:uppercase}
+.cs-x,.cs-back{width:42px;height:42px;border-radius:50%;border:2px solid #17201a;display:grid;place-items:center;font-size:18px;font-weight:800;flex:none}
+.cs-demo{margin:14px 20px 0;padding:10px 14px;border-radius:14px;background:#fff3cf;border:2px dashed #d9a520;font-size:13px;line-height:1.4}
+.cs-demo b{display:inline-block;margin-right:6px;background:#17201a;color:#fff;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:5px}
+.cs-list{padding:8px 20px;display:grid}
+.cs-row{display:grid;grid-template-columns:48px 1fr auto;grid-template-areas:"ico name qty" "ico name sum";column-gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(23,32,26,.08)}
+.cs-ico{grid-area:ico;width:48px;height:48px;border-radius:12px;background:#eef4ea;display:grid;place-items:center}
+.cs-ico svg{width:38px;height:38px}
+.cs-name{grid-area:name;display:grid;line-height:1.25;min-width:0}
+.cs-name b{font-size:15px}
+.cs-name small{font-size:12px;color:#666;font-weight:700}
+.cs-name span{font-size:13px;color:#666}
+.cs-row .qty{grid-area:qty;height:34px}
+.cs-row .qty button{width:28px;height:28px;font-size:18px}
+.cs-sum{grid-area:sum;text-align:right;font-weight:900;margin-top:4px}
+.cs-foot{position:sticky;bottom:0;margin-top:auto;padding:16px 20px calc(16px + env(safe-area-inset-bottom));background:var(--paper);border-top:2px dashed rgba(79,138,74,.4);display:grid;gap:12px}
+.cs-total{display:flex;justify-content:space-between;align-items:baseline;font-weight:700}
+.cs-total b{font-size:26px;font-weight:900}
+.cs-go{width:100%}
+.cs-empty{flex:1;display:grid;place-items:center;align-content:center;gap:10px;padding:30px;text-align:center}
+.cs-empty p{margin:0;font-weight:600;color:#4b544d}
+.cs-critter{width:120px}
+.cs-critter.big{width:140px;margin:0 auto}
+
+/* оформление */
+.cs-form{display:flex;flex-direction:column;flex:1}
+.cs-form fieldset{border:0;margin:0;padding:14px 20px 4px;display:grid;gap:10px}
+.cs-form legend{padding:0;margin-bottom:8px;font-weight:900;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#5f9f59}
+.cs-points{display:grid;gap:8px}
+.cs-point{display:grid;gap:2px;padding:12px 14px 12px 42px;border-radius:14px;background:#fff;border:2px solid rgba(23,32,26,.12);position:relative;cursor:pointer;transition:border-color .2s}
+.cs-point input{position:absolute;left:14px;top:15px;width:18px;height:18px;accent-color:#4f8a4a}
+.cs-point b{font-size:15px}
+.cs-point span{font-size:12.5px;font-weight:700}
+.cs-point span.ok{color:#2f7a3a}.cs-point span.no{color:#a8432f}
+.cs-point.on{border-color:#4f8a4a;box-shadow:0 0 0 3px rgba(143,191,138,.35)}
+.cs-hint{margin:0;font-size:12.5px;color:#666}
+.cs-in{width:100%;min-height:48px;padding:12px 14px;border-radius:12px;border:2px solid rgba(23,32,26,.18);background:#fff;font:inherit;font-size:16px;color:#17201a;outline:none;resize:vertical}
+.cs-in:focus{border-color:#4f8a4a}
+.cs-radio{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;font-weight:600;cursor:pointer}
+.cs-radio input{margin-top:3px;width:18px;height:18px;accent-color:#4f8a4a;flex:none}
+.cs-radio.off{opacity:.55;cursor:not-allowed}
+.cs-radio em{font-style:normal;font-size:11px;font-weight:800;text-transform:uppercase;background:#17201a;color:#fff;padding:2px 7px;border-radius:5px;margin-left:4px}
+.cs-check{display:flex;gap:10px;align-items:flex-start;padding:14px 20px 0;font-size:13px;font-weight:600;color:#4b544d;cursor:pointer}
+.cs-check input{width:18px;height:18px;accent-color:#4f8a4a;flex:none;margin-top:1px}
+.cs-err{margin:10px 20px 0;padding:10px 14px;border-radius:12px;background:#fde4e1;color:#a8231d;font-weight:700;font-size:14px}
+
+/* заказ принят + пример сообщения в Telegram */
+.cs-done{padding:20px;display:grid;gap:14px;text-align:center}
+.cs-done h4{margin:0;font-family:var(--f-display);font-weight:400;font-size:34px;line-height:1;text-transform:uppercase}
+.cs-done p{margin:0;color:#4b544d}
+.cart-sheet .btn.ghost{color:#17201a;border-color:#17201a;background:transparent;box-shadow:0 4px 0 #17201a}
+.cart-sheet .btn.ghost::after{background:rgba(23,32,26,.06)}
+.tg-demo{text-align:left;background:#d8e4ee;border-radius:18px;padding:12px;border:2px solid rgba(23,32,26,.12)}
+.tg-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.tg-top div{display:grid;line-height:1.2}
+.tg-top small{color:#6b7a88;font-size:12px}
+.tg-ava{width:36px;height:36px;border-radius:50%;background:var(--sage);color:#fff;display:grid;place-items:center;font-weight:900}
+.tg-msg{background:#fff;border-radius:14px 14px 14px 4px;padding:12px 14px;font-size:13.5px;line-height:1.45;color:#17201a}
+.tg-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.tg-btns span{text-align:center;font-size:12px;font-weight:700;background:#eef3f7;color:#3a76a8;border-radius:8px;padding:7px 4px}
+.tg-cap{margin:8px 0 0!important;font-size:12px;color:#6b7a88!important;text-align:center}
+
+/* телефон: корзина снизу, кнопка над нижней панелью */
+@media (max-width:760px){
+  .cart-fab{bottom:calc(92px + env(safe-area-inset-bottom));right:12px;height:54px;font-size:15px;padding:0 18px 0 14px}
+  .cart-toast{bottom:calc(156px + env(safe-area-inset-bottom))}
+  .dish .price-row .weight{display:none}
+  .dish .price{white-space:nowrap}
+  .dish-add{margin-left:auto}
+  .cart-sheet{margin:auto 0 0;width:100%;max-width:100%;height:auto;max-height:92dvh;border-left:0;border-top:2.5px solid var(--outline);border-radius:26px 26px 0 0}
+  .cart-sheet[open]{animation:csUp .45s var(--ease)}
+  .cs-inner{max-height:92dvh}
+}
+@keyframes csUp{from{transform:translateY(60px);opacity:0}}
