@@ -4,8 +4,11 @@
 (function(){
   const $ = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => [...r.querySelectorAll(s)];
-  const KEY = "les-demo-cart-v1";
-  const PTS = window.POINTS || [];
+  // На странице франшизы — своя корзина: своё меню, свои цены, заказ только на Будённого
+  const FR = document.body.dataset.page === "franchise";
+  const KEY = FR ? "les-demo-cart-bud-v1" : "les-demo-cart-v1";
+  const PTS = FR ? [window.FRANCHISE] : (window.POINTS || []);
+  const ROOT = FR ? "#fMenuRoot" : "#menuRoot";
   const rub = n => n.toLocaleString("ru-RU") + " ₽";
   const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   const ART = window.ART || {};
@@ -49,7 +52,7 @@
   const stepper = (k, q) => `<span class="qty" data-k="${esc(k)}"><button type="button" data-dec aria-label="Убрать одну">−</button><b>${q}</b><button type="button" data-inc aria-label="Добавить ещё">+</button></span>`;
 
   function decorate(){
-    $$("#menuRoot .mi").forEach(mi=>{
+    $$(ROOT + " .mi").forEach(mi=>{
       if(mi.querySelector(".mi-add")) return;
       const vs = variants(mi);
       if(mi.dataset.title === "Все соусы") return;   // соусы выбираются чипсами
@@ -59,7 +62,7 @@
       mi.querySelector(".mi-p").appendChild(box);
     });
     // соусы: чипсы кликабельны
-    $$("#menuRoot .sauce-chips span").forEach(ch=>{
+    $$(ROOT + " .sauce-chips span").forEach(ch=>{
       if(ch.dataset.sauce) return;
       ch.dataset.sauce = 1; ch.setAttribute("role","button"); ch.tabIndex = 0;
       ch.title = "Добавить соус — 59 ₽";
@@ -100,7 +103,7 @@
   document.addEventListener("keydown", e=>{ if((e.key==="Enter"||e.key===" ") && e.target.matches(".sauce-chips span[data-sauce]")){ e.preventDefault(); e.target.click(); } });
 
   /* ---------- плавающая кнопка корзины ---------- */
-  const onMenu = document.body.dataset.page === "menu";
+  const onMenu = document.body.dataset.page === "menu" || FR;
   document.body.insertAdjacentHTML("beforeend", `
     <button type="button" class="cart-fab" aria-label="Открыть корзину">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20.5" r="1.3"/><circle cx="17" cy="20.5" r="1.3"/></svg>
@@ -127,7 +130,7 @@
   function renderCart(){
     view = "cart";
     if(!cart.length){
-      inner.innerHTML = head("Корзина") + `<div class="cs-empty"><div class="cs-critter">${window.ANIMAL?ANIMAL("hedgehog"):""}</div><p>В корзине пока пусто.<br>Ёжик ждёт вашу шаверму.</p><a class="btn" href="menu.html">Открыть меню</a></div>`;
+      inner.innerHTML = head("Корзина") + `<div class="cs-empty"><div class="cs-critter">${window.ANIMAL?ANIMAL("hedgehog"):""}</div><p>В корзине пока пусто.<br>Ёжик ждёт вашу шаверму.</p><a class="btn" href="${FR?"#fMenuRoot":"menu.html"}">Открыть меню</a></div>`;
       return;
     }
     inner.innerHTML = head("Корзина") + DEMO + `<div class="cs-list">${cart.map(i=>`
@@ -150,6 +153,7 @@
   }
   let form = {point: PTS[0] && PTS[0].id, time:"", name:"", phone:"", comment:"", pay:"place", agree:false};
   try{ Object.assign(form, JSON.parse(localStorage.getItem(KEY+"-form"))||{}); form.agree = false; }catch(e){}
+  if(!PTS.some(x=>x.id===form.point)) form.point = PTS[0] && PTS[0].id;
 
   function renderCheckout(){
     view = "checkout";
@@ -160,7 +164,9 @@
         <fieldset><legend>Где заберёте</legend><div class="cs-points">${PTS.map(x=>`
           <label class="cs-point${x.id===p.id?" on":""}"><input type="radio" name="point" value="${x.id}"${x.id===p.id?" checked":""}>
             <b>${esc(x.address)}</b><span class="${PT.isOpen(x)?"ok":"no"}">${PT.statusText(x)}</span></label>`).join("")}</div>
-          <p class="cs-hint">Самовывоз. Доставку можно подключить на следующем этапе.</p></fieldset>
+          <p class="cs-hint">${FR
+            ? "Самовывоз с точки на Будённого — у неё своё меню. Доставку можно подключить на следующем этапе."
+            : "Самовывоз. Доставку можно подключить на следующем этапе.<br>Будённого, 19 — франшиза со своим меню, заказ там оформляется <a href=\"franchise.html\">на странице точки</a>."}</p></fieldset>
         <fieldset><legend>Ко времени</legend><select name="time" class="cs-in">${sl.map(s=>`<option value="${s[0]}"${s[0]===form.time?" selected":""}>${s[1]}</option>`).join("")}</select></fieldset>
         <fieldset><legend>Контакты</legend>
           <input class="cs-in" name="name" autocomplete="given-name" placeholder="Имя" value="${esc(form.name)}" required>

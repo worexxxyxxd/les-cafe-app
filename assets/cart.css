@@ -94,6 +94,7 @@
 .cs-point span.ok{color:#2f7a3a}.cs-point span.no{color:#a8432f}
 .cs-point.on{border-color:#4f8a4a;box-shadow:0 0 0 3px rgba(143,191,138,.35)}
 .cs-hint{margin:0;font-size:12.5px;color:#666}
+.cs-hint a{color:#3f7a3a;font-weight:800;text-decoration:underline}
 .cs-in{width:100%;min-height:48px;padding:12px 14px;border-radius:12px;border:2px solid rgba(23,32,26,.18);background:#fff;font:inherit;font-size:16px;color:#17201a;outline:none;resize:vertical}
 .cs-in:focus{border-color:#4f8a4a}
 .cs-radio{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;font-weight:600;cursor:pointer}
