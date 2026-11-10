@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Лес на Будённого, 19 — франшизная точка в Красносельском районе</title>
+<meta name="description" content="Кафе «Лес» на проспекте Будённого, 19к1 (Красносельский район): шаверма, бургеры и закуски. Рейтинг 5,0, 567 оценок. Часы работы, телефон, меню и карта.">
+<meta name="theme-color" content="#0b1510">
+<meta property="og:image" content="assets/img/logo-source.png">
+<link rel="icon" type="image/png" href="assets/img/favicon.png"><link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Ruslan+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/brand.css">
+</head>
+<body data-page="franchise">
+<main>
+  <section class="page-hero">
+    <div class="hero-canvas" data-scene="burger" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="eyebrow">Франшиза · Красносельский район</span>
+      <h1>Лес на <span class="accent">Будённого</span></h1>
+      <p>Проспект Будённого, 19, корпус 1. Своё меню с бургерами «Дракон» и «Версус», шаверма XXL и тёплый зал у проспекта Ветеранов.</p>
+      <div class="fr-badges">
+        <a class="btn" data-f="phone" href="#"></a>
+        <a class="btn ghost" data-f="route" href="#" target="_blank" rel="noopener">Построить маршрут</a>
+      </div>
+      <div class="award-sticker" style="margin-top:26px"><i>★</i><span>«Хорошее место 2026»<br>5,0 · 567 оценок на Яндекс Картах</span></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:clamp(40px,6vw,80px)">
+    <div class="wrap fr-grid">
+      <div class="info-card reveal">
+        <div><h3>Адрес</h3><div class="v"><span data-f="address"></span><br><span style="color:var(--muted);font-size:.7em;font-family:var(--f-text);font-weight:600">Санкт-Петербург, <span data-f="district"></span></span></div></div>
+        <div><h3>Как найти</h3><p style="margin:0" data-f="near"></p></div>
+        <div><h3>Часы работы</h3><table class="hours"><tbody data-f="hours"></tbody></table></div>
+        <div><h3>Сейчас</h3><div class="v"><span class="pt-status" data-pstatus="bud"></span></div></div>
+        <div class="hero-actions"><a class="btn" data-f="route" href="#" target="_blank" rel="noopener">Маршрут</a><a class="btn ghost" data-f="org" href="#" target="_blank" rel="noopener">Отзывы на Яндекс Картах ↗</a></div>
+      </div>
+      <div class="map-card reveal" data-d="1"><iframe id="fMap" title="Лес на Будённого на Яндекс Картах" loading="lazy"></iframe></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div><span class="eyebrow">Оценки гостей</span><h2>Что <i>хвалят</i></h2></div>
+        <p>Доля положительных упоминаний в отзывах о точке на Яндекс Картах.</p>
+        <div class="head-critter wiggle" data-animal="bear"></div>
+      </div>
+      <div class="rating-card reveal">
+        <div class="rating-big"><b>5,0</b><div class="stars">★★★★★</div><span>567 оценок · 413 отзывов</span></div>
+        <div class="bars">
+          <div class="bar-row"><span>Интерьер<small>20 отзывов</small></span><div class="track"><div class="fill" data-w="100"></div></div><span class="v">100%</span></div>
+          <div class="bar-row"><span>Атмосфера<small>70 отзывов</small></span><div class="track"><div class="fill" data-w="99"></div></div><span class="v">99%</span></div>
+          <div class="bar-row"><span>Чистота<small>47 отзывов</small></span><div class="track"><div class="fill" data-w="96"></div></div><span class="v">96%</span></div>
+          <div class="bar-row"><span>Бургеры<small>19 отзывов</small></span><div class="track"><div class="fill" data-w="89"></div></div><span class="v">89%</span></div>
+          <div class="bar-row"><span>Персонал<small>145 отзывов</small></span><div class="track"><div class="fill" data-w="83"></div></div><span class="v">83%</span></div>
+          <div class="bar-row"><span>Еда<small>349 отзывов</small></span><div class="track"><div class="fill" data-w="82"></div></div><span class="v">82%</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="menu-tools">
+    <div class="wrap"><div class="chips" id="fChips" role="tablist" aria-label="Категории меню"></div></div>
+  </div>
+  <div class="wrap">
+    <div class="menu-sheet">
+      <div class="menu-banner"><h2>Меню</h2><img src="assets/img/logo.png" alt="Лес — уличная еда с русской душой" width="1118" height="396"></div>
+      <div id="fMenuRoot"></div>
+    </div>
+    <div class="menu-note">Меню точки на Будённого по данным Яндекс Карт (от представителя заведения). Цены могут меняться, так что уточняйте на кассе.</div>
+  </div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="cta reveal">
+        <span class="eyebrow">Франшиза «Лес»</span>
+        <h2>Хотите свой Лес <span class="tale" style="color:var(--gold)">в своём районе?</span></h2>
+        <p>Точка на Будённого работает по франшизе. Напишите нам, расскажем, как открыть такую же.</p>
+        <div class="row"><a class="btn" href="https://t.me/lesrest" target="_blank" rel="noopener">Написать в Telegram</a><a class="btn ghost" href="contacts.html">Все точки сети</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/menu-data.js"></script>
+<script src="assets/animals.js"></script>
+<script src="assets/main.js"></script>
+<script src="assets/scene.js"></script>
+</body>
+</html>

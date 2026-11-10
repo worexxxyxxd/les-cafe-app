@@ -1,17 +1,58 @@
-/* Данные кафе «Лес» (источник: Яндекс Карты — организация 126400507925) */
+/* Данные сети «Лес» (источник: Яндекс Карты, ноябрь 2026) */
 window.CAFE = {
   name: "Лес",
-  address: "Софийская ул., 22, Санкт-Петербург",
-  phone: "+7 (921) 368-13-83",
-  phoneHref: "tel:+79213681383",
-  hours: "Круглосуточно",
-  rating: "5,0", votes: 276, reviews: 218,
+  slogan: "Уличная еда с русской душой",
   check: "350–550 ₽",
   tg: "https://t.me/lesrest", tgName: "@lesrest",
-  vk: "https://vk.ru/club230654123",
-  mapUrl: "https://yandex.ru/maps/org/les/126400507925/",
-  routeUrl: "https://yandex.ru/maps/?rtext=~59.875985%2C30.401220&rtt=auto",
-  lat: 59.875985, lon: 30.401220
+  vk: "https://vk.ru/club230654123"
+};
+
+/* Часы работы: "24" = круглосуточно, иначе 7 пар [открытие, закрытие] в минутах, пн…вс */
+const DAILY = (o,c) => Array.from({length:7}, () => [o,c]);
+/* Точки сети. org — id организации на Яндекс Картах */
+window.POINTS = [
+  { id:"sof", name:"Софийская", address:"Софийская ул., 22", district:"Фрунзенский район",
+    phone:"+7 (921) 368-13-83", tel:"+79213681383", hours:"24",
+    lat:59.875985, lon:30.401220, org:"126400507925", rating:"5,0", votes:276,
+    near:"Остановка «Улица Белы Куна / Софийская» — 4 минуты пешком, рядом «Славянский базар»" },
+  { id:"msk", name:"Московский", address:"Московский просп., 62", district:"Московский район",
+    phone:"+7 (931) 253-17-05", tel:"+79312531705", hours:"24",
+    lat:59.908051, lon:30.318806, org:"227778242156", rating:"5,0", votes:361, award:true,
+    near:"Остановка «Московский проспект» — 80 метров" },
+  { id:"dim", name:"Димитрова", address:"ул. Димитрова, 22, корп. 3", district:"Фрунзенский район",
+    phone:"+7 (921) 374-27-67", tel:"+79213742767", hours:"24",
+    lat:59.850811, lon:30.394345, org:"148060924868", rating:"4,9", votes:82,
+    near:"Остановка «Загребский бульвар» — 80 метров, метро «Проспект Славы» — 640 метров" },
+  { id:"yuzh", name:"Южное шоссе", address:"Южное ш., 47, корп. 1", district:"Фрунзенский район",
+    phone:"+7 (927) 604-04-64", tel:"+79276040464", hours:DAILY(660,1380),
+    lat:59.860437, lon:30.411429, org:"231505675270", rating:"5,0", votes:181, award:true,
+    near:"Остановка «Пражская улица / Проспект Славы» — 540 метров" }
+];
+/* Франшизная точка — своя страница franchise.html */
+window.FRANCHISE = { id:"bud", name:"Будённого", address:"просп. Будённого, 19, корп. 1", district:"Красносельский район",
+  phone:"+7 (953) 156-01-06", tel:"+79531560106",
+  hours:[[660,1380],[660,1440],[660,1440],[660,1440],[660,1440],[660,1440],[660,1380]],
+  lat:59.842972, lon:30.092089, org:"241660603134", rating:"5,0", votes:567, reviews:413, award:true, franchise:true,
+  near:"Остановка «Проспект Ветеранов / Проспект Будённого» — 340 метров" };
+
+/* Хелперы для точек */
+window.PT = {
+  all: () => [...POINTS, FRANCHISE],
+  org: p => `https://yandex.ru/maps/org/les/${p.org}/`,
+  route: p => `https://yandex.ru/maps/?rtext=~${p.lat}%2C${p.lon}&rtt=auto`,
+  full: p => `${p.address}, Санкт-Петербург`,
+  fmt: m => `${String(Math.floor(m/60)%24).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`,
+  hoursText(p){ if(p.hours==="24") return "Круглосуточно";
+    const h = p.hours, same = h.every(d=>d[0]===h[0][0] && d[1]===h[0][1]);
+    return same ? `Ежедневно ${PT.fmt(h[0][0])}–${PT.fmt(h[0][1])}` : "пн, вс 11:00–23:00 · вт–сб 11:00–00:00"; },
+  dayText(p, i){ if(p.hours==="24") return "Круглосуточно"; const d = p.hours[i]; return `${PT.fmt(d[0])}–${PT.fmt(d[1])}`; },
+  now(){ const d = new Date(), utc = d.getTime() + d.getTimezoneOffset()*60000; return new Date(utc + 3*3600000); },
+  isOpen(p, n = PT.now()){ if(p.hours==="24") return true;
+    const day = (n.getDay()+6)%7, m = n.getHours()*60 + n.getMinutes(), [o,c] = p.hours[day];
+    return m >= o && m < c; },
+  statusText(p){ if(p.hours==="24") return "Открыто · круглосуточно";
+    const n = PT.now(), day = (n.getDay()+6)%7, [o,c] = p.hours[day];
+    return PT.isOpen(p,n) ? `Открыто до ${PT.fmt(c)}` : `Закрыто · откроется в ${PT.fmt(o)}`; }
 };
 
 /* ---------- SVG-иллюстрации (объём за счёт градиентов и теней) ---------- */
@@ -77,48 +118,29 @@ window.CAFE = {
     falafel(){ let s=""; [[68,110],[104,96],[138,116],[84,140],[120,144],[100,124]].forEach(([x,y],i)=>{s+=`<circle cx="${x}" cy="${y}" r="20" fill="#7a4a1c"/><circle cx="${x}" cy="${y}" r="20" fill="url(#ff)"/>${Array.from({length:7},(_,k)=>`<circle cx="${x-10+((k*7)%20)}" cy="${y-10+((k*11)%20)}" r="1.6" fill="${k%2?'#4a7a2a':'#c48a3a'}"/>`).join("")}`;});
       return `<svg viewBox="0 0 200 200"><defs><radialGradient id="ff" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#d9a04a"/><stop offset="1" stop-color="#5a2e0e" stop-opacity=".9"/></radialGradient></defs>${shadow(174,72)}${s}<g fill="#8fd16a"><path d="M40 70c10-12 24-10 26 2-10 6-20 6-26-2z"/><path d="M150 70c8-10 22-8 22 2-8 6-18 6-22-2z"/></g></svg>`;},
     sticks(){ let s=""; for(let i=0;i<5;i++){const y=70+i*20;s+=`<g transform="rotate(${-18+i*6} 100 ${y})"><rect x="40" y="${y-9}" width="120" height="18" rx="9" fill="#e3a23e"/>${Array.from({length:14},(_,k)=>`<circle cx="${46+k*8.5}" cy="${y-3+(k%2)*5}" r="1.5" fill="#a5601a"/>`).join("")}<rect x="150" y="${y-7}" width="12" height="14" rx="6" fill="#fff4c2"/></g>`;}
-      return `<svg viewBox="0 0 200 200">${shadow(180,70)}${s}</svg>`;}
+      return `<svg viewBox="0 0 200 200">${shadow(180,70)}${s}</svg>`;},
+    /* суп в глиняной миске */
+    soup(o={}){ const g=id("sp"); const c=o.c||"#c0392b";
+      return `<svg viewBox="0 0 200 200"><defs><linearGradient id="${g}b" x1="0" x2="1"><stop offset="0" stop-color="#6b3a1c"/><stop offset=".45" stop-color="#b8703a"/><stop offset="1" stop-color="#5a2e14"/></linearGradient></defs>
+        ${shadow(176,70)}<path d="M28 96h144c0 46-34 76-72 76S28 142 28 96z" fill="url(#${g}b)"/>
+        <ellipse cx="100" cy="96" rx="72" ry="18" fill="#4a2410"/><ellipse cx="100" cy="96" rx="64" ry="13" fill="${c}"/>
+        <ellipse cx="80" cy="94" rx="10" ry="4" fill="#fff4e0" opacity=".85"/><circle cx="118" cy="98" r="4" fill="#8fd16a"/><circle cx="104" cy="92" r="3" fill="#8fd16a"/>
+        <path d="M44 122c18 10 38 14 56 14" stroke="#ffd9a8" stroke-width="4" fill="none" opacity=".35" stroke-linecap="round"/>
+        <g stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".55"><path d="M76 74c-8-10 8-16 0-28"/><path d="M100 70c-8-10 8-16 0-28"/><path d="M124 74c-8-10 8-16 0-28"/></g>
+        <path d="M150 60l-34 40" stroke="#d9c7a2" stroke-width="7" stroke-linecap="round"/></svg>`;},
+    /* кофе в стаканчике */
+    coffee(){ const g=id("cf");
+      return `<svg viewBox="0 0 200 200"><defs><linearGradient id="${g}c" x1="0" x2="1"><stop offset="0" stop-color="#d9d4c6"/><stop offset=".4" stop-color="#fffdf6"/><stop offset="1" stop-color="#bdb6a4"/></linearGradient></defs>
+        ${shadow(182,46)}<path d="M58 64h84l-12 116H70z" fill="url(#${g}c)"/><path d="M62 104h76l-4 40H66z" fill="#8fbf8a"/>
+        <path d="M86 116l14 16 14-16" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="50" y="50" width="100" height="18" rx="8" fill="#2a2a2a"/><rect x="62" y="40" width="76" height="14" rx="6" fill="#3a3a3a"/>
+        <g stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".5"><path d="M88 30c-6-8 6-12 0-22"/><path d="M110 30c-6-8 6-12 0-22"/></g></svg>`;},
+    /* лимонад / вода */
+    drink(o={}){ const c=o.c||"#e8452c";
+      return `<svg viewBox="0 0 200 200">${shadow(184,40)}<path d="M80 30h40v16c14 10 18 22 18 40v86a10 10 0 0 1-10 10H72a10 10 0 0 1-10-10V86c0-18 4-30 18-40z" fill="${c}" opacity=".92"/>
+        <rect x="78" y="18" width="44" height="16" rx="5" fill="#2a2a2a"/><rect x="64" y="104" width="72" height="44" rx="6" fill="#fff6e8"/>
+        <path d="M80 126h40" stroke="${c}" stroke-width="6" stroke-linecap="round"/><path d="M72 60c-2 30-2 70 0 100" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".35" fill="none"/></svg>`;}
   };
   window.ART = ART;
 })();
 
-/* [название, порция/описание, цена, иллюстрация, хит, опции иллюстрации] */
-window.MENU = [
-  { id:"shaverma", title:"Шаверма", items:[
-    ["Золотой стандарт","Классика: курица на углях, свежие овощи, фирменный соус",329,"shawarma",true],
-    ["Традиционная","Та самая, с которой начинают знакомство",329,"shawarma"],
-    ["Мини","Когда хочется перекусить",239,"shawarma"],
-    ["Коронная","Фирменный рецепт Леса",419,"shawarma",true],
-    ["Лесная с грибами","С грибами — как из чащи",449,"shawarma",false,{acc:"#a87a4a",acc2:"#6cbf4a"}],
-    ["Огнезмей","Для тех, кто любит с огоньком",449,"shawarma",true,{acc:"#ff3a1c",acc2:"#ffb02c"}],
-    ["Охотничья с колбасками","С охотничьими колбасками",449,"shawarma",false,{meat:"#7a2a14"}],
-    ["4 сыра","Четыре сыра и тянучка",519,"shawarma",false,{acc:"#ffd25a",acc2:"#ffe38a"}],
-    ["Боярская с беконом","С хрустящим беконом",519,"shawarma",false,{meat:"#b04a3a"}],
-    ["Царская с креветкой","С креветками — по-царски",569,"shawarma",false,{meat:"#ff8a5c"}],
-    ["Мраморная гриль","Мраморная говядина на гриле",599,"shawarma",true,{meat:"#6a2410"}],
-    ["Рваная свинина","Томлёная рваная свинина",599,"shawarma",false,{meat:"#8a3c1c"}],
-    ["Вегетарианская с фалафелем","Фалафель и много овощей",339,"shawarma",false,{meat:"#b0702a",acc2:"#4ab04a"}]
-  ]},
-  { id:"plate", title:"Шаверма на тарелке", items:[
-    ["Стандартная","Мясо, картофель фри, овощи и соус на тарелке",519,"plate"],
-    ["Богатырская","Порция для богатыря",599,"plate",true,{meat:"#7a3414"}],
-    ["Царская с креветкой","С креветками",649,"plate",false,{shrimp:true}],
-    ["Рваная свинина","С томлёной рваной свининой",619,"plate",false,{meat:"#8a3c1c"}],
-    ["Вегетарианская с фалафелем","С фалафелем",519,"plate",false,{veg:true}]
-  ]},
-  { id:"burgers", title:"Бургеры", items:[
-    ["Горыныч бургер","Огненный — трёхголовый не дремлет",529,"burger",true,{fire:true}],
-    ["Традиционный бургер","Котлета, овощи, соус",459,"burger"],
-    ["Сырный бургер","С расплавленным сыром",539,"burger",false,{cheese:true}],
-    ["Заморский бургер","Рецепт из-за моря",589,"burger",false,{cheese:true,pat:"#4a2010"}],
-    ["Бургер в тортилье","Всё как в бургере, но в тортилье",619,"shawarma",false,{meat:"#6a2a10"}],
-    ["Куриный бургер","С куриной котлетой",359,"burger",false,{pat:"#c07a2a"}]
-  ]},
-  { id:"snacks", title:"Закуски", items:[
-    ["Картофель фри","Хрустящий, золотистый",179,"fries",true],
-    ["Наггетсы","Куриные, с соусом",199,"nuggets"],
-    ["Фалафель","Нутовые шарики",229,"falafel"],
-    ["Сырные палочки","Тянутся как надо",319,"sticks"],
-    ["Креветки","В хрустящей панировке",419,"shrimp"]
-  ]}
-];

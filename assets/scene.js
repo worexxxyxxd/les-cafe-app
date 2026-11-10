@@ -30,7 +30,7 @@
   scene.add(new T.HemisphereLight(0x6a8fc0, 0x0c1a10, .7));
   const moon = new T.DirectionalLight(0xbcd2ff, 1.1); moon.position.set(-6, 12, -10); scene.add(moon);
   const warm = new T.PointLight(0xff8a3c, 2.4, 16, 1.6); warm.position.set(1.5, 3, 3); scene.add(warm);
-  const rim = new T.PointLight(0x8fd16a, 1.2, 14, 2); rim.position.set(-3, 2.5, -2); scene.add(rim);
+  const rim = new T.PointLight(0x9fd08c, 1.5, 14, 2); rim.position.set(-3, 2.5, -2); scene.add(rim);
 
   /* ---------- вспомогательные текстуры ---------- */
   function canvasTex(w, h, draw){ const c = document.createElement("canvas"); c.width=w; c.height=h; draw(c.getContext("2d"), w, h); const t = new T.CanvasTexture(c); t.encoding = T.sRGBEncoding; t.anisotropy = 4; return t; }
@@ -61,7 +61,12 @@
   const N = mobile ? 90 : 190;
   const trunkGeo = new T.CylinderGeometry(.12, .2, 1.6, 6); trunkGeo.translate(0,.8,0);
   const coneGeo = new T.ConeGeometry(1, 1.8, 7);
-  const trunks = new T.InstancedMesh(trunkGeo, new T.MeshStandardMaterial({color:0x3b2615, roughness:1, flatShading:true}), N);
+  // кора берёзы (как на фирменных макетах): светлая с тёмными чёрточками
+  const barkTex = canvasTex(64,256,(g,w,h)=>{ g.fillStyle="#f1efe6"; g.fillRect(0,0,w,h); g.fillStyle="#1d1f1c";
+    let r2 = 3; const r = ()=> (r2 = (r2*16807)%2147483647)/2147483647;
+    for(let i=0;i<26;i++){ const y = r()*h, x = r()*w*.8; g.fillRect(x, y, 6 + r()*24, 2 + r()*4); } });
+  barkTex.wrapS = barkTex.wrapT = T.RepeatWrapping;
+  const trunks = new T.InstancedMesh(trunkGeo, new T.MeshStandardMaterial({map:barkTex, roughness:.9}), N);
   const crowns = new T.InstancedMesh(coneGeo, new T.MeshStandardMaterial({roughness:.95, flatShading:true}), N*3);
   const m4 = new T.Matrix4(), q = new T.Quaternion(), s = new T.Vector3(), p = new T.Vector3(), col = new T.Color();
   const greens = [0x1f4a2a,0x2a5e33,0x184026,0x2f6b3a,0x234d34];
@@ -71,6 +76,7 @@
     const z = 4 - R()*150, sc = .8 + R()*1.4;
     p.set(x, 0, z); q.setFromAxisAngle(new T.Vector3(0,1,0), R()*6.28); s.set(sc,sc,sc);
     m4.compose(p,q,s); trunks.setMatrixAt(i,m4);
+    trunks.setColorAt(i, col.setHex(i%3 ? 0xd9d6cc : 0x6b4a33));
     for(let k=0;k<3;k++){
       const cs = sc*(1.25-k*.3);
       p.set(x, sc*(1.4 + k*1.0), z); s.set(cs, sc*(1-k*.12), cs);
@@ -212,12 +218,12 @@
   }
 
   function buildPin(){
-    const mat = new T.MeshStandardMaterial({color:0xff6a2c, roughness:.35, metalness:.1});
+    const mat = new T.MeshStandardMaterial({color:0xe5322d, roughness:.35, metalness:.1});
     const head = new T.Mesh(new T.SphereGeometry(.7,40,24), mat); head.position.y = 2.2;
     const cone = new T.Mesh(new T.ConeGeometry(.6,1.5,40), mat); cone.rotation.x = Math.PI; cone.position.y = 1.15;
     const hole = new T.Mesh(new T.SphereGeometry(.28,24,16), new T.MeshStandardMaterial({color:0xf3ecdc})); hole.position.set(0,2.25,.55); hole.scale.z=.5;
     const pin = new T.Group(); pin.add(head, cone, hole); hero.add(pin); hero.userData.pin = pin;
-    for(let i=0;i<3;i++){ const r = new T.Mesh(new T.RingGeometry(.5,.6,48), new T.MeshBasicMaterial({color:0xff9a3c, transparent:true, side:T.DoubleSide, depthWrite:false}));
+    for(let i=0;i<3;i++){ const r = new T.Mesh(new T.RingGeometry(.5,.6,48), new T.MeshBasicMaterial({color:0x9fd08c, transparent:true, side:T.DoubleSide, depthWrite:false}));
       r.rotation.x = -Math.PI/2; r.position.y = .45; hero.add(r); rings.push(r); }
     hero.position.set(mobile?0:2.6, mobile?.9:.2, 0);
   }

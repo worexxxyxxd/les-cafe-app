@@ -3,60 +3,60 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Контакты — кафе «Лес» · Софийская ул., 22</title>
-<meta name="description" content="Кафе «Лес»: Софийская ул., 22, Санкт-Петербург. Телефон +7 (921) 368-13-83. Работаем круглосуточно.">
+<title>Адреса — Лес · 5 кафе в Санкт-Петербурге</title>
+<meta name="description" content="Адреса сети кафе «Лес» в Петербурге: Софийская ул., 22; Московский пр., 62; ул. Димитрова, 22к3; Южное ш., 47к1; пр. Будённого, 19к1. Телефоны и часы работы.">
 <meta name="theme-color" content="#0b1510">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%2312211a'/%3E%3Cpath d='M24 8l8 12h-4l7 10h-5l6 8H12l6-8h-5l7-10h-4z' fill='%233f8a4a'/%3E%3C/svg%3E">
+<meta property="og:image" content="assets/img/logo-source.png">
+<link rel="icon" type="image/png" href="assets/img/favicon.png"><link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=Manrope:wght@400;600;700;800&family=Ruslan+Display&family=Unbounded:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Ruslan+Display&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/brand.css">
 </head>
 <body data-page="contacts">
 <main>
   <section class="page-hero">
     <div class="hero-canvas" data-scene="pin" aria-hidden="true"></div>
     <div class="wrap">
-      <span class="eyebrow">Фрунзенский район</span>
-      <h1>Тропа <span class="accent">к Лесу</span></h1>
-      <p>Софийская улица, 22. Свет у нас горит всегда: днём, ночью и в праздники.</p>
+      <span class="eyebrow">5 точек в Петербурге</span>
+      <h1>Тропы <span class="accent">к Лесу</span></h1>
+      <p>Софийская, Московский, Димитрова, Южное шоссе и Будённого. Три точки работают круглосуточно.</p>
     </div>
   </section>
 
   <section class="section" style="padding-top:clamp(40px,6vw,80px)">
-    <div class="wrap contact-grid">
-      <div class="info-card reveal">
-        <div><h3>Адрес</h3><div class="v">Софийская ул., 22<br><span style="color:var(--muted);font-size:.75em">Санкт-Петербург</span></div></div>
-        <div><h3>Телефон</h3><div class="v"><a href="tel:+79213681383">+7 (921) 368-13-83</a></div></div>
-        <div><h3>Часы работы</h3>
-          <table class="hours"><tbody>
-            <tr><td>Понедельник</td><td>Круглосуточно</td></tr><tr><td>Вторник</td><td>Круглосуточно</td></tr>
-            <tr><td>Среда</td><td>Круглосуточно</td></tr><tr><td>Четверг</td><td>Круглосуточно</td></tr>
-            <tr><td>Пятница</td><td>Круглосуточно</td></tr><tr><td>Суббота</td><td>Круглосуточно</td></tr>
-            <tr><td>Воскресенье</td><td>Круглосуточно</td></tr>
-          </tbody></table></div>
-        <div><h3>Средний чек</h3><div class="v">350–550 ₽ <span style="color:var(--muted);font-size:.65em">· карта или наличные</span></div></div>
-        <div><h3>Мы в соцсетях</h3><div class="social"><a href="https://t.me/lesrest" target="_blank" rel="noopener">Telegram @lesrest</a><a href="https://vk.ru/club230654123" target="_blank" rel="noopener">ВКонтакте</a></div></div>
-        <div class="hero-actions"><a class="btn" href="https://yandex.ru/maps/?rtext=~59.875985%2C30.401220&rtt=auto" target="_blank" rel="noopener">Построить маршрут</a><a class="btn ghost" href="tel:+79213681383">Позвонить</a></div>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div><span class="eyebrow">Адреса и телефоны</span><h2>Выберите <i>полянку</i></h2></div>
+        <p>Нажмите «На карте», чтобы приблизить точку. Статус «открыто» считается по времени Петербурга.</p>
+        <div class="head-critter wiggle" data-animal="fox"></div>
       </div>
-      <div class="map-card reveal" data-d="1">
-        <iframe title="Кафе «Лес» на Яндекс Картах" loading="lazy" src="https://yandex.ru/map-widget/v1/?ll=30.401220%2C59.875985&z=16&pt=30.401220,59.875985,pm2rdl"></iframe>
+      <div class="contact-grid v2">
+        <div class="points" id="pointsList"></div>
+        <div class="map-sticky reveal" data-d="1">
+          <div class="map-card"><iframe id="mapFrame" title="Точки сети «Лес» на Яндекс Картах" loading="lazy"></iframe></div>
+          <button type="button" class="btn ghost sm map-all" id="mapAll">Показать все точки</button>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="section" style="padding-top:0">
     <div class="wrap">
-      <div class="section-head reveal"><div><span class="eyebrow">Как добраться</span><h2>Три <i>тропинки</i></h2></div></div>
+      <div class="section-head reveal"><div><span class="eyebrow">Для всех точек</span><h2>Полезно <i>знать</i></h2></div></div>
       <div class="ways">
-        <div class="way reveal"><span class="ic" style="background:#2e7d32;color:#fff">М</span><div><h3>Метро «Международная»</h3><p>1,6 км, около 20 минут пешком или пара остановок на автобусе.</p></div></div>
-        <div class="way reveal" data-d="1"><span class="ic" style="background:var(--gold)">🚌</span><div><h3>Остановка рядом</h3><p>«Улица Белы Куна / Софийская улица», 320 м, это 4 минуты пешком.</p></div></div>
-        <div class="way reveal" data-d="2"><span class="ic" style="background:var(--teal)">🚗</span><div><h3>На машине</h3><p>Ориентир: «Славянский базар». Маршрут и парковки есть в Яндекс Картах.</p></div></div>
+        <div class="way reveal"><span class="ic" style="background:var(--gold)">₽</span><div><h3>Средний чек 350–550 ₽</h3><p>Оплата картой, наличными или по QR-коду.</p></div></div>
+        <div class="way reveal" data-d="1"><span class="ic" style="background:var(--terra);color:#fff">🛵</span><div><h3>Доставка и навынос</h3><p>Заказывайте через Яндекс Еду и Delivery Club или забирайте с собой.</p></div></div>
+        <div class="way reveal" data-d="2"><span class="ic" style="background:var(--paper)">🐾</span><div><h3>Можно с собакой</h3><p>Питомцы — желанные гости во всех наших Лесах.</p></div></div>
       </div>
+      <div class="info-card reveal" style="margin-top:20px"><div><h3>Мы в соцсетях</h3><div class="social"><a href="https://t.me/lesrest" target="_blank" rel="noopener">Telegram @lesrest</a><a href="https://vk.ru/club230654123" target="_blank" rel="noopener">ВКонтакте</a></div></div></div>
     </div>
   </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
 <script src="assets/data.js"></script>
+<script src="assets/menu-data.js"></script>
+<script src="assets/animals.js"></script>
 <script src="assets/main.js"></script>
 <script src="assets/scene.js"></script>
 </body>
