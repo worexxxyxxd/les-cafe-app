@@ -277,7 +277,7 @@
     const dt = Math.min(clock.getDelta(), .05); t += reduced ? dt*.2 : dt;
 
     ptr.x += (ptr.tx - ptr.x)*.05; ptr.y += (ptr.ty - ptr.y)*.05;
-    const maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
+    const maxScroll = Math.max(1, (window.__scroller || document.documentElement).scrollHeight - vh);
     const spRaw = Math.min(1, Math.max(0, fixed ? scrollY / maxScroll : scrollY / vh));
     spS = spS < 0 ? spRaw : spS + (spRaw - spS) * .18;   // плавно, без рывков
     const sp = spS;
