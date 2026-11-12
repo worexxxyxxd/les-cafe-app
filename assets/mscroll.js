@@ -56,5 +56,43 @@
     const t = document.getElementById(a.getAttribute("href").slice(1)); if(!t) return;
     e.preventDefault(); goTo(t, true);
   });
+  // «Прилипающие» элементы (строка разделов меню) внутри прокручиваемого блока на iPhone
+  // дрожат на 2–5 px при каждой прокрутке. Вместо sticky закрепляем их через position:fixed,
+  // а на их месте оставляем пустую вставку той же высоты, чтобы страница не прыгала.
+  css.textContent += `.ms-fixed{position:fixed!important;z-index:30;margin:0!important}
+    .menu-tools.ms-fixed{background:#0b1510!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    html.mscroll .step,html.mscroll .story-sticky,html.mscroll .map-sticky{position:relative!important;top:auto!important}`;
+  const stickies = [...sc.querySelectorAll(".menu-tools")]
+    .filter(el => getComputedStyle(el).position === "sticky")
+    .map(el => {
+      const spacer = document.createElement("div");
+      spacer.setAttribute("aria-hidden", "true");
+      el.parentNode.insertBefore(spacer, el);
+      return {el, spacer, top: parseFloat(getComputedStyle(el).top) || 0, on: false};
+    });
+  function pin(){
+    for(const s of stickies){
+      const r = s.spacer.getBoundingClientRect();
+      const end = s.el.parentElement.getBoundingClientRect().bottom;   // как sticky: не дальше своего блока
+      const want = r.top <= s.top && end > s.top + s.el.offsetHeight;
+      if(want && !s.on){
+        s.spacer.style.height = s.el.offsetHeight + "px";
+        s.el.classList.add("ms-fixed");
+        s.on = true;
+      }else if(!want && s.on){
+        s.el.classList.remove("ms-fixed");
+        s.el.style.left = s.el.style.width = s.el.style.top = "";
+        s.spacer.style.height = "0px";
+        s.on = false;
+      }
+      if(s.on){ s.el.style.top = s.top + "px"; s.el.style.left = r.left + "px"; s.el.style.width = r.width + "px"; }
+    }
+  }
+  if(stickies.length){
+    sc.addEventListener("scroll", pin, {passive:true});
+    addEventListener("resize", pin);
+    pin();
+  }
+
   window.dispatchEvent(new Event("scroll"));
 })();
