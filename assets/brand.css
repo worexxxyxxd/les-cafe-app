@@ -296,3 +296,15 @@ html{background:#0b1510}
   .review{transform-style:flat}
   .reviews .review.reveal{opacity:1;transform:none;transition:none}
 }
+
+/* ====== телефон: плавная прокрутка без тряски ====== */
+@media (max-width:760px){
+  html{scroll-behavior:auto}
+  /* блоки появляются плавным проявлением, без подъёма снизу */
+  .reveal{transform:none!important;transition:opacity .6s ease}
+  /* размытие фона под блоками сильно нагружает iPhone при прокрутке — заменяем сплошным фоном */
+  .feat,.menu-tools,.bottom-bar,.stat,.badge{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .feat{background:rgba(18,33,26,.94)}
+  .menu-tools{background:rgba(11,21,16,.97)}
+  .bottom-bar{background:rgba(18,33,26,.97)}
+}

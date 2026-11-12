@@ -257,8 +257,14 @@
   /* ---------- ввод ---------- */
   const ptr = {x:0, y:0, tx:0, ty:0};
   addEventListener("pointermove", e=>{ ptr.tx = e.clientX/innerWidth - .5; ptr.ty = e.clientY/innerHeight - .5; }, {passive:true});
-  // гироскоп на телефонах (если доступен без запроса разрешения)
-  addEventListener("deviceorientation", e=>{ if(e.gamma==null) return; ptr.tx = Math.max(-.5,Math.min(.5,e.gamma/40)); ptr.ty = Math.max(-.5,Math.min(.5,(e.beta-45)/50)); }, {passive:true});
+  // гироскоп отключён: на телефоне фон качался вместе с рукой
+
+  // Стабильная высота экрана. На телефоне innerHeight прыгает, когда браузер прячет или
+  // показывает адресную строку, — из-за этого фон дёргался при прокрутке. Берём наибольшую
+  // высоту и обновляем её только при смене ширины (поворот экрана).
+  let vh = innerHeight, vw = innerWidth;
+  addEventListener("resize", ()=>{ if(innerWidth !== vw){ vw = innerWidth; vh = innerHeight; } else vh = Math.max(vh, innerHeight); });
+  let spS = -1, hpS = -1;   // сглаженные значения прокрутки
 
   let visible = true;
   if(!fixed) new IntersectionObserver(es=>{ visible = es[0].isIntersecting; }).observe(host);
@@ -271,8 +277,10 @@
     const dt = Math.min(clock.getDelta(), .05); t += reduced ? dt*.2 : dt;
 
     ptr.x += (ptr.tx - ptr.x)*.05; ptr.y += (ptr.ty - ptr.y)*.05;
-    const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-    const sp = fixed ? scrollY / maxScroll : Math.min(1, scrollY / innerHeight);
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
+    const spRaw = Math.min(1, Math.max(0, fixed ? scrollY / maxScroll : scrollY / vh));
+    spS = spS < 0 ? spRaw : spS + (spRaw - spS) * .18;   // плавно, без рывков
+    const sp = spS;
 
     // камера: полёт вперёд по лесной тропе
     const fly = fixed ? sp*70 : sp*4;
@@ -291,7 +299,9 @@
     warm.intensity = (mode==="fire"?4:2.4) + Math.sin(t*13)*.3 + Math.sin(t*7.3)*.25;
 
     if(mode==="home"){
-      const hp = Math.min(1, scrollY / innerHeight);
+      const hpRaw = Math.min(1, Math.max(0, scrollY / vh));
+      hpS = hpS < 0 ? hpRaw : hpS + (hpRaw - hpS) * .18;
+      const hp = hpS;
       hero.rotation.y = t*.45 + hp*3;
       hero.position.y = baseY + Math.sin(t*1.2)*.12 + hp*1.5;
       hero.position.z = camera.position.z - camBase.z;           // летит вместе с камерой
