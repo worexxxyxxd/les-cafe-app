@@ -24,7 +24,8 @@
     ["menu.html","Меню","menu","02"],
     ["contacts.html","Адреса","contacts","03"],
     ["franchise.html","Франшиза","franchise","04"],
-    ["about.html","О нас","about","05"]
+    ["about.html","О нас","about","05"],
+    ["app.html","Приложение","app","06"]
   ];
   const cur = k => k===page ? ' aria-current="page"' : '';
 
