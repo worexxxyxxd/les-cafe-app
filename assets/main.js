@@ -23,7 +23,7 @@
     ["index.html","Главная","home","01"],
     ["menu.html","Меню","menu","02"],
     ["contacts.html","Адреса","contacts","03"],
-    ["franchise.html","Будённого","franchise","04"],
+    ["franchise.html","Франшиза","franchise","04"],
     ["about.html","О нас","about","05"],
     ["app.html","Приложение","app","06"]
   ];
@@ -52,7 +52,6 @@
 
   document.body.insertAdjacentHTML("beforeend", `
     <footer class="footer">
-      <div class="footer-critters" aria-hidden="true">${ANIMAL("hedgehog")}${ANIMAL("bear")}${ANIMAL("hare")}${ANIMAL("owl")}</div>
       <div class="wrap">
       <div class="footer-grid">
         <div><a class="logo logo-lg" href="index.html">${LOGO}</a>
@@ -284,11 +283,10 @@
 
   /* ---------- карточки точек ---------- */
   function pointCard(p, opts={}){
-    return `<article class="point reveal${p.franchise?' is-fr':''}" id="${opts.anchor?p.id:''}" data-pid="${p.id}">
+    return `<article class="point reveal" id="${opts.anchor?p.id:''}" data-pid="${p.id}">
       <div class="pt-top">
         <span class="pt-status" data-pstatus="${p.id}"></span>
         ${p.award?'<span class="pt-award">Хорошее место 2026</span>':''}
-        ${p.franchise?'<span class="pt-award fr">Франшиза</span>':''}
       </div>
       <h3>${p.address}</h3>
       <p class="pt-district">${p.district}</p>
