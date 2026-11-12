@@ -272,3 +272,10 @@ body::before{
   .marquee-walker{display:none}
   .critter .eyes{animation:none}
 }
+
+/* шесть пунктов меню в шапке: не переносить подписи, на узких экранах ужать отступы */
+.nav a{white-space:nowrap}
+@media (max-width:1400px){
+  .nav{gap:2px}
+  .nav a{padding:10px 12px;font-size:14px}
+}
