@@ -272,11 +272,16 @@ body::before{
 
 /* ====== мобильные исправления ====== */
 :root{color-scheme:dark}
+html{background:#0b1510}
 @media (max-width:760px){
   /* шапка всегда видна сверху и не «ездит» вместе со страницей */
   :root{--header-h:calc(64px + env(safe-area-inset-top))}
-  .header{background:rgba(11,21,16,.92);border-color:var(--line);padding-top:env(safe-area-inset-top)}
-  .header.is-solid{background:rgba(11,21,16,.92)}
+  .header,.header.is-solid{background:#0b1510;border-color:var(--line);padding-top:env(safe-area-inset-top);
+    backdrop-filter:none;-webkit-backdrop-filter:none}
+  /* тёмная подложка над шапкой: в Safari на iPhone страница прокручивается под адресной
+     строкой, и между краем экрана и шапкой было видно содержимое. Теперь там сплошной фон,
+     и шапка выглядит прибитой к верху экрана. */
+  .header::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:200px;background:#0b1510;pointer-events:none}
   /* фоновая 3D-сцена фиксированной высоты — не дёргается при скрытии адресной строки */
   .hero-canvas.fixed{bottom:auto;height:100lvh;contain:strict}
   /* отзывы: обычная горизонтальная прокрутка пальцем */
