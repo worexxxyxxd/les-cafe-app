@@ -79,17 +79,6 @@
   <section class="section" style="padding-top:0">
     <div class="wrap">
       <div class="section-head reveal">
-        <div><span class="eyebrow">Экраны</span><h2>Как оно <i>выглядит</i></h2></div>
-        <p>Скриншоты приложения из App Store. Листайте в сторону.</p>
-        <div class="head-critter wiggle" data-animal="owl"></div>
-      </div>
-      <div class="shots reveal" id="shots" tabindex="0" aria-label="Скриншоты приложения"></div>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="section-head reveal">
         <div><span class="eyebrow">Три шага</span><h2>Как <i>заказать</i></h2></div>
         <div class="head-critter wiggle" data-animal="hare"></div>
       </div>
@@ -121,20 +110,9 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script>
   (function(){
-    /* Скриншоты и ссылка — из карточки приложения в App Store (id6745549669) */
+    /* Ссылки на приложение в App Store (id6745549669) и RuStore */
     const STORE = "https://apps.apple.com/ru/app/id6745549669";
     const RUSTORE = "https://www.rustore.ru/catalog/app/com.yumasoft.ypos.les.customer";
-    const CDN = "https://is1-ssl.mzstatic.com/image/thumb/";
-    const SHOTS = [
-      "PurpleSource221/v4/9b/bb/3f/9bbb3fd6-b451-9f8d-1df2-fada801233c3/simulator_screenshot_27A95B5A-6211-47E0-9ACF-6DDB72D31C25.png",
-      "PurpleSource211/v4/0f/43/1b/0f431b21-f2a8-0f1e-f9f9-3470eab9a223/simulator_screenshot_CE84ED61-6FC2-402B-A4C4-40F331E017EC.png",
-      "PurpleSource211/v4/e5/cf/9e/e5cf9e8e-a09d-1a7d-05a6-12f83401a848/simulator_screenshot_34A04B4D-02A4-4C17-A601-8B92A87C3CC4.png",
-      "PurpleSource211/v4/a6/0d/c8/a60dc8a0-57c9-9299-414d-5688f26d6f99/simulator_screenshot_795E04D3-9A93-4A26-8200-1B5098ACE370.png",
-      "PurpleSource221/v4/db/df/64/dbdf6400-a824-da5e-9e24-26dad4c714bb/simulator_screenshot_E8FFF30B-ADBA-4CB0-A000-976CBF0CB7F3.png",
-      "PurpleSource221/v4/7c/dc/22/7cdc22b8-3440-d088-49c2-a7ed6106a330/simulator_screenshot_755DB16F-1154-4EB6-B72D-C3404F5CDC2F.png"
-    ];
-    document.getElementById("shots").innerHTML = SHOTS.map((s,i)=>
-      `<div class="phone"><img loading="lazy" src="${CDN}${s}/600x1300bb.jpg" alt="Экран приложения «Лес», скриншот ${i+1} из ${SHOTS.length}"></div>`).join("");
     document.querySelectorAll("[data-store]").forEach(a=>a.href = STORE);
     document.querySelectorAll("[data-rustore]").forEach(a=>a.href = RUSTORE);
     try{
