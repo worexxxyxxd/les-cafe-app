@@ -232,8 +232,15 @@
   // раскладка: на широком экране объект справа от текста, на узком — сверху по центру
   const LAYOUT = { home:[2.1,3.75,1,.6], burger:[1.45,2.75,1,.62], fire:[.2,1.4,1,.8], pin:[.2,1.2,1,.75] };
   let narrow = mobile, baseY = 0, baseS = 1;
+  const touch = matchMedia("(hover:none) and (pointer:coarse)").matches;
+  let lastW = 0;
   function resize(){
-    const w = host.clientWidth, h = host.clientHeight;
+    const w = host.clientWidth;
+    // на телефоне высота окна меняется при каждом скролле (адресная строка) — берём
+    // максимальную высоту экрана и пересчитываем сцену только при смене ширины
+    if(touch && w === lastW) return;
+    lastW = w;
+    const h = touch ? Math.max(host.clientHeight, innerHeight, screen.height) : host.clientHeight;
     renderer.setSize(w, h, false); camera.aspect = w/h;
     narrow = camera.aspect < 1.05;
     camera.fov = narrow ? 62 : 48; camera.updateProjectionMatrix();

@@ -140,7 +140,6 @@ body::before{
 .point{position:relative;display:flex;flex-direction:column;gap:6px;padding:24px;border-radius:28px;background:var(--bg-2);border:2px solid var(--line);transition:transform .35s var(--ease),border-color .3s,opacity .9s var(--ease)}
 .point.in:hover{transform:translateY(-4px) rotate(-.4deg);border-color:rgba(143,196,128,.5)}
 .point.active{border-color:var(--gold);box-shadow:0 0 0 3px rgba(143,196,128,.25)}
-.point.is-fr{background:linear-gradient(160deg,#3a1614,var(--bg-2) 70%);border-color:rgba(229,50,45,.45)}
 .pt-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:26px}
 .pt-status{font-size:12.5px;font-weight:800;color:#e89a8a;display:inline-flex;align-items:center;gap:7px}
 .pt-status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
@@ -171,8 +170,6 @@ body::before{
 /* ====== меню: лист как в печатной версии ====== */
 .menu-sheet{background:var(--paper);color:#17201a;border-radius:34px;padding:clamp(20px,4vw,48px);margin-top:28px;position:relative;overflow:hidden;
   border:2.5px solid var(--outline);box-shadow:0 10px 0 var(--outline)}
-.menu-sheet::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23e6efe1'%3E%3Cpath d='M30 14c8 6 10 16 4 24 6 2 10 8 6 14-6 2-10 0-12-4-2 4-6 6-12 4-4-6 0-12 6-14-6-8-4-18 4-24 2 2 4 2 4 0z'/%3E%3Cpath d='M92 70c8 6 10 16 4 24 6 2 10 8 6 14-6 2-10 0-12-4-2 4-6 6-12 4-4-6 0-12 6-14-6-8-4-18 4-24 2 2 4 2 4 0z'/%3E%3C/g%3E%3C/svg%3E")}
 .menu-sheet > *{position:relative}
 .menu-banner{position:relative;margin:calc(clamp(20px,4vw,48px) * -1) calc(clamp(20px,4vw,48px) * -1) 10px;padding:clamp(22px,4vw,40px) clamp(20px,4vw,48px);
   background:#9cc497;display:flex;align-items:center;justify-content:space-between;gap:20px;overflow:hidden}
@@ -221,7 +218,7 @@ body::before{
 .fr-badges{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
 
 /* ====== подвал со зверятами ====== */
-.footer{margin-top:clamp(110px,12vw,180px);overflow:visible}
+.footer{margin-top:clamp(30px,4vw,60px);overflow:visible}
 .footer-critters{position:absolute;left:0;right:0;top:0;transform:translateY(-80%);display:flex;justify-content:center;align-items:flex-end;gap:clamp(10px,4vw,60px);pointer-events:none}
 .footer-critters .critter{width:clamp(70px,9vw,120px);pointer-events:auto;cursor:pointer}
 .footer-critters .critter:nth-child(2){width:clamp(84px,11vw,140px)}
@@ -271,4 +268,19 @@ body::before{
 @media (prefers-reduced-motion:reduce){
   .marquee-walker{display:none}
   .critter .eyes{animation:none}
+}
+
+/* ====== мобильные исправления ====== */
+:root{color-scheme:dark}
+@media (max-width:760px){
+  /* шапка всегда видна сверху и не «ездит» вместе со страницей */
+  :root{--header-h:calc(64px + env(safe-area-inset-top))}
+  .header{background:rgba(11,21,16,.92);border-color:var(--line);padding-top:env(safe-area-inset-top)}
+  .header.is-solid{background:rgba(11,21,16,.92)}
+  /* фоновая 3D-сцена фиксированной высоты — не дёргается при скрытии адресной строки */
+  .hero-canvas.fixed{bottom:auto;height:100lvh;contain:strict}
+  /* отзывы: обычная горизонтальная прокрутка пальцем */
+  .reviews{gap:14px;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  .review{transform-style:flat}
+  .reviews .review.reveal{opacity:1;transform:none;transition:none}
 }

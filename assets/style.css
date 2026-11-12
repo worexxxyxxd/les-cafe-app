@@ -41,6 +41,7 @@ body{
   font-family:var(--f-text);font-size:16px;line-height:1.6;font-synthesis:none;
   overflow-x:hidden;-webkit-font-smoothing:antialiased;
 }
+@supports (overflow:clip){ body{overflow-x:clip} }
 img,svg,canvas{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -60,6 +61,8 @@ body::before{
 /* ============ Header ============ */
 .header{
   position:fixed;top:0;left:0;right:0;z-index:50;height:var(--header-h);
+  transform:translate3d(0,0,0);-webkit-transform:translate3d(0,0,0);will-change:transform;
+  -webkit-backface-visibility:hidden;backface-visibility:hidden;
   display:flex;align-items:center;transition:background .35s,backdrop-filter .35s,border-color .35s;
   border-bottom:1px solid transparent;
 }
